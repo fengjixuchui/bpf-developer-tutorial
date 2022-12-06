@@ -1,10 +1,17 @@
-// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
-/* Copyright (c) 2021~2022 Hengqi Chen */
 #include <vmlinux.h>
 #include <bpf/bpf_helpers.h>
-#include "sigsnoop.h"
+#include <bpf/bpf_tracing.h>
 
 #define MAX_ENTRIES	10240
+#define TASK_COMM_LEN	16
+
+struct event {
+	unsigned int pid;
+	unsigned int tpid;
+	int sig;
+	int ret;
+	char comm[TASK_COMM_LEN];
+};
 
 struct {
 	__uint(type, BPF_MAP_TYPE_HASH);
@@ -42,7 +49,7 @@ static int probe_exit(void *ctx, int ret)
 
 	eventp->ret = ret;
 	bpf_printk("PID %d (%s) sent signal %d to PID %d, ret = %d",
-		   eventp->pid, eventp->comm, eventp->sig, eventp->tpid, eventp->ret);
+		   eventp->pid, eventp->comm, eventp->sig, eventp->tpid, ret);
 
 cleanup:
 	bpf_map_delete_elem(&values, &tid);
@@ -60,36 +67,6 @@ int kill_entry(struct trace_event_raw_sys_enter *ctx)
 
 SEC("tracepoint/syscalls/sys_exit_kill")
 int kill_exit(struct trace_event_raw_sys_exit *ctx)
-{
-	return probe_exit(ctx, ctx->ret);
-}
-
-SEC("tracepoint/syscalls/sys_enter_tkill")
-int tkill_entry(struct trace_event_raw_sys_enter *ctx)
-{
-	pid_t tpid = (pid_t)ctx->args[0];
-	int sig = (int)ctx->args[1];
-
-	return probe_entry(tpid, sig);
-}
-
-SEC("tracepoint/syscalls/sys_exit_tkill")
-int tkill_exit(struct trace_event_raw_sys_exit *ctx)
-{
-	return probe_exit(ctx, ctx->ret);
-}
-
-SEC("tracepoint/syscalls/sys_enter_tgkill")
-int tgkill_entry(struct trace_event_raw_sys_enter *ctx)
-{
-	pid_t tpid = (pid_t)ctx->args[1];
-	int sig = (int)ctx->args[2];
-
-	return probe_entry(tpid, sig);
-}
-
-SEC("tracepoint/syscalls/sys_exit_tgkill")
-int tgkill_exit(struct trace_event_raw_sys_exit *ctx)
 {
 	return probe_exit(ctx, ctx->ret);
 }
