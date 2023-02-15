@@ -1,8 +1,8 @@
-# eBPF 入门开发实践指南五：在 eBPF 中使用  uprobe 捕获 bash 的 readline 函数调用
+# eBPF 入门开发实践教程五：在 eBPF 中使用  uprobe 捕获 bash 的 readline 函数调用
 
 eBPF (Extended Berkeley Packet Filter) 是 Linux 内核上的一个强大的网络和性能分析工具，它允许开发者在内核运行时动态加载、更新和运行用户定义的代码。
 
-本文是 eBPF 入门开发实践指南的第五篇，主要介绍如何使用 uprobe 捕获 bash 的 readline 函数调用。
+本文是 eBPF 入门开发实践教程的第五篇，主要介绍如何使用 uprobe 捕获 bash 的 readline 函数调用。
 
 ## 什么是uprobe
 
@@ -39,21 +39,21 @@ uprobe 是一种用于捕获用户空间函数调用的 eBPF 的探针，我们�
 SEC("uretprobe//bin/bash:readline")
 int BPF_KRETPROBE(printret, const void *ret)
 {
-	char str[MAX_LINE_SIZE];
-	char comm[TASK_COMM_LEN];
-	u32 pid;
+ char str[MAX_LINE_SIZE];
+ char comm[TASK_COMM_LEN];
+ u32 pid;
 
-	if (!ret)
-		return 0;
+ if (!ret)
+  return 0;
 
-	bpf_get_current_comm(&comm, sizeof(comm));
+ bpf_get_current_comm(&comm, sizeof(comm));
 
-	pid = bpf_get_current_pid_tgid() >> 32;
-	bpf_probe_read_user_str(str, sizeof(str), ret);
+ pid = bpf_get_current_pid_tgid() >> 32;
+ bpf_probe_read_user_str(str, sizeof(str), ret);
 
-	bpf_printk("PID %d (%s) read: %s ", pid, comm, str);
+ bpf_printk("PID %d (%s) read: %s ", pid, comm, str);
 
-	return 0;
+ return 0;
 };
 
 char LICENSE[] SEC("license") = "GPL";
@@ -81,6 +81,8 @@ BPF_KRETPROBE(printret, const void *ret)
 
 这里的 printret 是探针函数的名称，const void *ret 是探针函数的参数，它代表被捕获的函数的返回值。
 
+eunomia-bpf 是一个结合 Wasm 的开源 eBPF 动态加载运行时和开发工具链，它的目的是简化 eBPF 程序的开发、构建、分发、运行。可以参考 <https://github.com/eunomia-bpf/eunomia-bpf> 下载和安装 ecc 编译工具链和 ecli 运行时。我们使用 eunomia-bpf 编译运行这个例子。
+
 编译运行上述代码：
 
 ```console
@@ -105,4 +107,6 @@ $ sudo cat /sys/kernel/debug/tracing/trace_pipe
 
 在上述代码中，我们使用了 SEC 宏来定义了一个 uprobe 探针，它指定了要捕获的用户空间程序 (bin/bash) 和要捕获的函数 (readline)。此外，我们还使用了 BPF_KRETPROBE 宏来定义了一个用于处理 readline 函数返回值的回调函数 (printret)。该函数可以获取到 readline 函数的返回值，并将其打印到内核日志中。通过这样的方式，我们就可以使用 eBPF 来捕获 bash 的 readline 函数调用，并获取用户在 bash 中输入的命令行。
 
-更多的例子和详细的开发指南，请参考 eunomia-bpf 的官方文档：https://github.com/eunomia-bpf/eunomia-bpf
+更多的例子和详细的开发指南，请参考 eunomia-bpf 的官方文档：<https://github.com/eunomia-bpf/eunomia-bpf>
+
+完整的教程和源代码已经全部开源，可以在 <https://github.com/eunomia-bpf/bpf-developer-tutorial> 中查看。
