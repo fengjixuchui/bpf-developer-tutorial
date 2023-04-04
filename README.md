@@ -1,10 +1,12 @@
-# 基于 libbpf 的 eBPF 开发者教程：通过 20 个小工具一步步学习 eBPF
+# eBPF 开发者教程：通过 20 个小工具一步步学习 eBPF
 
-这是一个基于 `CO-RE`（一次编译，到处运行）的 `libbpf` 的 eBPF 的开发教程，提供了从入门到进阶的 eBPF 开发实践，包括基本概念、代码实例、实际应用等内容。除了通常的教程文本内容，我们也希望通过 ChatGPT 等工具，为您提供交互式的 eBPF 学习体验！
+这是一个基于 `CO-RE`（一次编译，到处运行）的 eBPF 的开发教程，提供了从入门到进阶的 eBPF 开发实践，包括基本概念、代码实例、实际应用等内容。本教程主要基于 libbpf 框架，不过也包含了 BCC 的开发者教程文档：[bcc-documents](src/bcc-documents/tutorial.md)
+
+除了通常的教程文本内容，我们也希望通过 ChatGPT 等工具，为您提供交互式的 eBPF 学习体验！
 
 本教程不会进行复杂的概念讲解和场景介绍，主要希望提供一些 eBPF 小工具的案例（**非常短小，从二十行代码开始入门！**），来帮助 eBPF 应用的开发者快速上手 eBPF 的开发方法和技巧。教程内容可以在目录中找到，每个目录都是一个独立的 eBPF 工具案例。
 
-在学习 eBPF 的过程中，我们受到了 [bcc python developer tutorial](https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md) 的许多启发和帮助，但从 2022 年的角度出发，使用 libbpf 开发 eBPF 的应用是目前相对更好的选择。但目前似乎很少有基于 libbpf 和 BPF CO-RE 出发的、通过案例和工具介绍 eBPF 开发的教程，因此我们发起了这个项目，采用类似 bcc python developer tutorial 的组织方式，但使用 CO-RE 的 libbpf 进行开发。
+在学习 eBPF 的过程中，我们受到了 [bcc python developer tutorial](src/bcc-documents/tutorial_bcc_python_developer.md) 的许多启发和帮助，但从 2022 年的角度出发，使用 libbpf 开发 eBPF 的应用是目前相对更好的选择。但目前似乎很少有基于 libbpf 和 BPF CO-RE 出发的、通过案例和工具介绍 eBPF 开发的教程，因此我们发起了这个项目，采用类似 bcc python developer tutorial 的组织方式，但使用 CO-RE 的 libbpf 进行开发。
 
 本项目主要基于 [libbpf-boostrap](https://github.com/libbpf/libbpf-bootstrap) 和 [eunomia-bpf](https://github.com/eunomia-bpf/eunomia-bpf) 两个框架完成，并使用 eunomia-bpf 帮助简化一部分 libbpf eBPF 用户态代码的编写，让开发者专注于内核态的 eBPF 代码的开发。
 
@@ -13,7 +15,7 @@
 Gitee 镜像： <https://gitee.com/yunwei37/bpf-developer-tutorial>
 
 > - 我们还提供了一个使用 ChatGPT ，通过自然语言描述即可自动编写 eBPF 程序和追踪 Linux 系统的小工具，可以让您交互式地学习 eBPF 程序：[GPTtrace](https://github.com/eunomia-bpf/GPTtrace)
-> - 欢迎在本仓库的 issue 或 discussion 中提出任意关于 eBPF 学习的疑惑和问题，或者生产实践中遇到的 bug，我们会尽力帮助您解答！
+> - 欢迎在本仓库的 issue 或 discussion 中提出任意关于 eBPF 学习的疑惑和问题，或者实践中遇到的 bug，我们会尽力帮助您解答！
 
 ## 目录
 
@@ -39,7 +41,58 @@ Gitee 镜像： <https://gitee.com/yunwei37/bpf-developer-tutorial>
 - [lesson 19-lsm-connect](src/19-lsm-connect/README.md) 使用 LSM 进行安全检测防御
 - [lesson 20-tc](src/20-tc/README.md) 使用 eBPF 进行 tc 流量控制
 - [lesson 21-xdp](src/20-xdp/README.md) 使用 eBPF 进行 XDP 报文处理
-  
+
+
+## GitHub 模板：轻松构建 eBPF 项目和开发环境，一键在线编译运行 eBPF 程序
+
+面对创建一个 eBPF 项目，您是否对如何开始搭建环境以及选择编程语言感到困惑？别担心，我们为您准备了一系列 GitHub 模板，以便您快速启动一个全新的eBPF项目。只需在GitHub上点击 `Use this template` 按钮，即可开始使用。
+
+- <https://github.com/eunomia-bpf/libbpf-starter-template>：基于C语言和 libbpf 框架的eBPF项目模板
+- <https://github.com/eunomia-bpf/cilium-ebpf-starter-template>：基于C语言和cilium/ebpf框架的eBPF项目模板
+- <https://github.com/eunomia-bpf/libbpf-rs-starter-template>：基于Rust语言和libbpf-rs框架的eBPF项目模板
+- <https://github.com/eunomia-bpf/eunomia-template>：基于C语言和eunomia-bpf框架的eBPF项目模板
+
+这些启动模板包含以下功能：
+
+- 一个 Makefile，让您可以一键构建项目
+- 一个 Dockerfile，用于为您的 eBPF 项目自动创建一个容器化环境并发布到 Github Packages
+- GitHub Actions，用于自动化构建、测试和发布流程
+- eBPF 开发所需的所有依赖项
+
+> 通过将现有仓库设置为模板，您和其他人可以快速生成具有相同基础结构的新仓库，从而省去了手动创建和配置的繁琐过程。借助 GitHub 模板仓库，开发者可以专注于项目的核心功能和逻辑，而无需为基础设置和结构浪费时间。更多关于模板仓库的信息，请参阅官方文档：<https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository>
+
+当您使用上述 eBPF 项目模板中的一个创建了一个新仓库时，您可以使用 GitHub Codespaces 轻松地设置和启动一个在线开发环境。以下是使用 GitHub Codespaces 编译和运行 eBPF 程序的步骤：
+
+1. 点击您的新仓库中的 Code 按钮，然后选择 Open with Codespaces 选项：
+
+    ![code](imgs/code-button.png)
+
+2. GitHub 将为您创建一个新的 Codespace，这可能需要几分钟的时间，具体取决于您的网络速度和仓库的大小。
+3. 一旦您的 Codespace 启动并准备好使用，您可以打开终端并导航到您的项目目录中。
+4. 可以按照对应的仓库中的介绍来编译和运行 eBPF 程序:
+
+    ![codespace](imgs/codespace.png)
+
+使用 Codespaces，您可以轻松地创建、管理和共享云端开发环境，从而将您的开发过程加速并使其更具可靠性。您可以在任何地方、任何设备上使用 Codespaces 进行开发，只需要一个具有 Web 浏览器的计算机即可。同时，GitHub Codespaces 还支持预先配置好的环境、自定义开发容器和可定制化的开发体验等功能，以满足您的开发需求。
+
+在 codespace 编写代码，提交后，Github Actions 会进行编译并自动发布容器镜像。接下来，你可以在任何地方使用 docker 一键运行这个 eBPF 程序，例如：
+
+```console
+$ sudo docker run --rm -it --privileged ghcr.io/eunomia-bpf/libbpf-rs-template:latest
+[sudo] password for xxx: 
+Tracing run queue latency higher than 10000 us
+TIME     COMM             TID     LAT(us)       
+12:09:19 systemd-udevd    30786   18300         
+12:09:19 systemd-udevd    30796   21941         
+12:09:19 systemd-udevd    30793   10323         
+12:09:19 systemd-udevd    30795   14827         
+12:09:19 systemd-udevd    30790   17973         
+12:09:19 systemd-udevd    30793   12328         
+12:09:19 systemd-udevd    30796   28721
+```
+
+![docker](imgs/docker.png)
+
 ## 为什么需要基于 libbpf 和 BPF CO-RE 的教程？
 
 > 历史上，当需要开发一个BPF应用时可以选择BCC 框架，在实现各种用于Tracepoints的BPF程序时需要将BPF程序加载到内核中。BCC提供了内置的Clang编译器，可以在运行时编译BPF代码，并将其定制为符合特定主机内核的程序。这是在不断变化的内核内部下开发可维护的BPF应用程序的唯一方法。在BPF的可移植性和CO-RE一文中详细介绍了为什么会这样，以及为什么BCC是之前唯一的可行方式，此外还解释了为什么 libbpf 是目前比较好的选择。去年，Libbpf的功能和复杂性得到了重大提升，消除了与BCC之间的很多差异(特别是对Tracepoints应用来说)，并增加了很多BCC不支持的新的且强大的特性(如全局变量和BPF skeletons)。
