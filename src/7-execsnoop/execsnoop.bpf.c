@@ -15,19 +15,19 @@ int tracepoint__syscalls__sys_enter_execve(struct trace_event_raw_sys_enter* ctx
 {
 	u64 id;
 	pid_t pid, tgid;
-	struct event event;
+	struct event event={0};
 	struct task_struct *task;
 
 	uid_t uid = (u32)bpf_get_current_uid_gid();
 	id = bpf_get_current_pid_tgid();
-	pid = (pid_t)id;
 	tgid = id >> 32;
 
 	event.pid = tgid;
 	event.uid = uid;
 	task = (struct task_struct*)bpf_get_current_task();
 	event.ppid = BPF_CORE_READ(task, real_parent, tgid);
-	bpf_get_current_comm(&event.comm, sizeof(event.comm));
+	char *cmd_ptr = (char *) BPF_CORE_READ(ctx, args[0]);
+	bpf_probe_read_str(&event.comm, sizeof(event.comm), cmd_ptr);
 	bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
 	return 0;
 }

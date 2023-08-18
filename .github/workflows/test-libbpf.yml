@@ -1,0 +1,45 @@
+name: Test eunomia-bpf example CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron:  '0 0 * * 0'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+    - name: install deps
+      run: |
+        sudo apt-get install -y --no-install-recommends \
+        libelf1 libelf-dev zlib1g-dev \
+        make git clang llvm pkg-config build-essential
+    - name: test 11 bootstrap
+      run: |
+        make -C src/11-bootstrap
+        sudo timeout -s 2 3 src/11-bootstrap/bootstrap || if [ $? = 124 ]; then exit 0; else exit $?; fi
+    - name: test 12 profile
+      run: |
+        make -C src/12-profile
+        # sudo timeout -s 2 3 src/12-profile/profile || if [ $? = 124 ]; then exit 0; else exit $?; fi
+    - name: test 13 tcpconnlat
+      run: |
+        make -C src/13-tcpconnlat
+        # sudo timeout -s 2 3 src/13-tcpconnlat/tcpconnlat || if [ $? = 124 ]; then exit 0; else exit $?; fi
+    - name: test 14 tcpstates
+      run: |
+        make -C src/14-tcpstates
+        # sudo timeout -s 2 3 src/14-tcpstates/tcpstates || if [ $? = 124 ]; then exit 0; else exit $?; fi
+    - name: test 16 memleak
+      run: |
+        make -C src/16-memleak
+        # sudo timeout -s 2 3 src/16-memleak/memleak || if [ $? = 124 ]; then exit 0; else exit $?; fi
+    - name: test 17 biopattern
+      run: |
+        make -C src/17-biopattern
+        # sudo timeout -s 2 3 src/17-biopattern/biopattern || if [ $? = 124 ]; then exit 0; else exit $?; fi

@@ -1,4 +1,4 @@
-# eBPF 入门实践教程七：捕获进程执行/退出时间，通过 perf event array 向用户态打印输出
+# eBPF 入门实践教程七：捕获进程执行事件，通过 perf event array 向用户态打印输出
 
 eBPF (Extended Berkeley Packet Filter) 是 Linux 内核上的一个强大的网络和性能分析工具，它允许开发者在内核运行时动态加载、更新和运行用户定义的代码。
 
@@ -21,12 +21,12 @@ eBPF 提供了两个环形缓冲区，可以用来将信息从 eBPF 程序传输
 #define TASK_COMM_LEN 16
 
 struct event {
- int pid;
- int ppid;
- int uid;
- int retval;
- bool is_exit;
- char comm[TASK_COMM_LEN];
+    int pid;
+    int ppid;
+    int uid;
+    int retval;
+    bool is_exit;
+    char comm[TASK_COMM_LEN];
 };
 
 #endif /* __EXECSNOOP_H */
@@ -42,31 +42,31 @@ struct event {
 #include "execsnoop.h"
 
 struct {
- __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
- __uint(key_size, sizeof(u32));
- __uint(value_size, sizeof(u32));
+    __uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+    __uint(key_size, sizeof(u32));
+    __uint(value_size, sizeof(u32));
 } events SEC(".maps");
 
 SEC("tracepoint/syscalls/sys_enter_execve")
 int tracepoint__syscalls__sys_enter_execve(struct trace_event_raw_sys_enter* ctx)
 {
- u64 id;
- pid_t pid, tgid;
- struct event event;
- struct task_struct *task;
+    u64 id;
+    pid_t pid, tgid;
+    struct event event={0};
+    struct task_struct *task;
 
- uid_t uid = (u32)bpf_get_current_uid_gid();
- id = bpf_get_current_pid_tgid();
- pid = (pid_t)id;
- tgid = id >> 32;
+    uid_t uid = (u32)bpf_get_current_uid_gid();
+    id = bpf_get_current_pid_tgid();
+    tgid = id >> 32;
 
- event.pid = tgid;
- event.uid = uid;
- task = (struct task_struct*)bpf_get_current_task();
- event.ppid = BPF_CORE_READ(task, real_parent, tgid);
- bpf_get_current_comm(&event.comm, sizeof(event.comm));
- bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
- return 0;
+    event.pid = tgid;
+    event.uid = uid;
+    task = (struct task_struct*)bpf_get_current_task();
+    event.ppid = BPF_CORE_READ(task, real_parent, tgid);
+    char *cmd_ptr = (char *) BPF_CORE_READ(ctx, args[0]);
+    bpf_probe_read_str(&event.comm, sizeof(event.comm), cmd_ptr);
+    bpf_perf_event_output(ctx, &events, BPF_F_CURRENT_CPU, &event, sizeof(event));
+    return 0;
 }
 
 char LICENSE[] SEC("license") = "GPL";
@@ -83,7 +83,7 @@ eunomia-bpf 是一个结合 Wasm 的开源 eBPF 动态加载运行时和开发�
 使用容器编译：
 
 ```shell
-docker run -it -v `pwd`/:/src/ yunwei37/ebpm:latest
+docker run -it -v `pwd`/:/src/ ghcr.io/eunomia-bpf/ecc-`uname -m`:latest
 ```
 
 或者使用 ecc 编译：
@@ -122,4 +122,4 @@ struct {
 
 更多的例子和详细的开发指南，请参考 eunomia-bpf 的官方文档：<https://github.com/eunomia-bpf/eunomia-bpf>
 
-完整的教程和源代码已经全部开源，可以在 <https://github.com/eunomia-bpf/bpf-developer-tutorial> 中查看。
+如果您希望学习更多关于 eBPF 的知识和实践，可以访问我们的教程代码仓库 <https://github.com/eunomia-bpf/bpf-developer-tutorial> 或网站 <https://eunomia.dev/zh/tutorials/> 以获取更多示例和完整的教程。

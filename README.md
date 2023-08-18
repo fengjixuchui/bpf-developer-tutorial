@@ -1,23 +1,27 @@
-# eBPF 开发者教程：通过 20 个小工具一步步学习 eBPF
+# eBPF 开发者教程与知识库：Learn eBPF by example tools
 
-这是一个基于 `CO-RE`（一次编译，到处运行）的 eBPF 的开发教程，提供了从入门到进阶的 eBPF 开发实践，包括基本概念、代码实例、实际应用等内容。本教程主要基于 libbpf 框架，不过也包含了 BCC 的开发者教程文档：[bcc-documents](src/bcc-documents/tutorial.md)
+[![CI](https://github.com/eunomia-bpf/bpf-developer-tutorial/actions/workflows/main.yml/badge.svg)](https://github.com/eunomia-bpf/bpf-developer-tutorial/actions/workflows/main.yml)
 
-除了通常的教程文本内容，我们也希望通过 ChatGPT 等工具，为您提供交互式的 eBPF 学习体验！
+[GitHub](https://github.com/eunomia-bpf/bpf-developer-tutorial)
+[Gitee 镜像](https://gitee.com/yunwei37/bpf-developer-tutorial)
+
+这是一个基于 `CO-RE`（一次编译，到处运行）的 eBPF 的开发教程，提供了从入门到进阶的 eBPF 开发实践，包括基本概念、代码实例、实际应用等内容。和 BCC 不同的是，我们使用 libbpf、Cilium、libbpf-rs、eunomia-bpf 等框架进行开发，包含 C、Go、Rust 等语言的示例。
 
 本教程不会进行复杂的概念讲解和场景介绍，主要希望提供一些 eBPF 小工具的案例（**非常短小，从二十行代码开始入门！**），来帮助 eBPF 应用的开发者快速上手 eBPF 的开发方法和技巧。教程内容可以在目录中找到，每个目录都是一个独立的 eBPF 工具案例。
 
-在学习 eBPF 的过程中，我们受到了 [bcc python developer tutorial](src/bcc-documents/tutorial_bcc_python_developer.md) 的许多启发和帮助，但从 2022 年的角度出发，使用 libbpf 开发 eBPF 的应用是目前相对更好的选择。但目前似乎很少有基于 libbpf 和 BPF CO-RE 出发的、通过案例和工具介绍 eBPF 开发的教程，因此我们发起了这个项目，采用类似 bcc python developer tutorial 的组织方式，但使用 CO-RE 的 libbpf 进行开发。
+教程关注于可观测性、网络、安全等等方面的 eBPF 示例。
 
-本项目主要基于 [libbpf-boostrap](https://github.com/libbpf/libbpf-bootstrap) 和 [eunomia-bpf](https://github.com/eunomia-bpf/eunomia-bpf) 两个框架完成，并使用 eunomia-bpf 帮助简化一部分 libbpf eBPF 用户态代码的编写，让开发者专注于内核态的 eBPF 代码的开发。
+This is a development tutorial for eBPF based on CO-RE (Compile Once, Run Everywhere). It provides practical eBPF development practices from beginner to advanced, including basic concepts, code examples, and real-world applications. Unlike BCC, we use frameworks like libbpf, Cilium, libbpf-rs, and eunomia-bpf for development, with examples in languages such as C, Go, and Rust.
 
-教程主要关注于可观测性，并简要介绍了 eBPF 的其他应用，例如网络、安全等等。
+This tutorial does not cover complex concepts and scenario introductions. Its main purpose is to provide examples of eBPF tools (**very short, starting with twenty lines of code!**) to help eBPF application developers quickly grasp eBPF development methods and techniques. The tutorial content can be found in the directory, with each directory being an independent eBPF tool example.
 
-Gitee 镜像： <https://gitee.com/yunwei37/bpf-developer-tutorial>
-
-> - 我们还提供了一个使用 ChatGPT ，通过自然语言描述即可自动编写 eBPF 程序和追踪 Linux 系统的小工具，可以让您交互式地学习 eBPF 程序：[GPTtrace](https://github.com/eunomia-bpf/GPTtrace)
-> - 欢迎在本仓库的 issue 或 discussion 中提出任意关于 eBPF 学习的疑惑和问题，或者实践中遇到的 bug，我们会尽力帮助您解答！
+The tutorial is in Chinese and English versions. For English version, please refer to [README_en.md](README_en.md) and the README_en.md in each directory.
 
 ## 目录
+
+### 入门文档
+
+包含简单的 eBPF 程序样例与介绍。
 
 - [lesson 0-introduce](src/0-introduce/README.md) 介绍 eBPF 的基本概念和常见的开发工具
 - [lesson 1-helloworld](src/1-helloworld/README.md) 使用 eBPF 开发最简单的「Hello World」程序，介绍 eBPF 的基本框架和开发流程
@@ -32,25 +36,56 @@ Gitee 镜像： <https://gitee.com/yunwei37/bpf-developer-tutorial>
 - [lesson 10-hardirqs](src/10-hardirqs/README.md) 使用 hardirqs 或 softirqs 捕获中断事件
 - [lesson 11-bootstrap](src/11-bootstrap/README.md) 使用 libbpf-boostrap 为 eBPF 编写原生的 libbpf 用户态代码，并建立完整的 libbpf 工程。
 - [lesson 12-profile](src/12-profile/README.md) 使用 eBPF 进行性能分析
-- [lesson 13-tcpconnlat](src/13-tcpconnlat/README.md) 记录 TCP 连接延迟，并使用 libbpf-boostrap 或 Webassembly （WASM）在用户态处理数据
-- [lesson 14-tcpstates](src/14-tcpstates/README.md) 记录 TCP 连接状态
-- [lesson 15-tcprtt](src/15-tcprtt/README.md) 以直方图方式记录 TCP RTT，并使用 libbpf-boostrap 或 WASM 在用户态采样 map 信息
+- [lesson 13-tcpconnlat](src/13-tcpconnlat/README.md) 记录 TCP 连接延迟，并使用 libbpf 在用户态处理数据
+- [lesson 14-tcpstates](src/14-tcpstates/README.md) 记录 TCP 连接状态与 TCP RTT
+- [lesson 15-javagc](src/15-javagc/README.md) 使用 usdt 捕获用户态 Java GC 事件耗时
 - [lesson 16-memleak](src/16-memleak/README.md) 检测内存泄漏
 - [lesson 17-biopattern](src/17-biopattern/README.md) 捕获磁盘 IO 模式
 - [lesson 18-further-reading](src/18-further-reading/README.md) 更进一步的相关资料？
 - [lesson 19-lsm-connect](src/19-lsm-connect/README.md) 使用 LSM 进行安全检测防御
 - [lesson 20-tc](src/20-tc/README.md) 使用 eBPF 进行 tc 流量控制
-- [lesson 21-xdp](src/20-xdp/README.md) 使用 eBPF 进行 XDP 报文处理
+- [lesson 21-xdp](src/21-xdp/README.md) 使用 eBPF 进行 XDP 报文处理
 
+### 进阶文档与示例程序
+
+这里涵盖了一系列和 eBPF 相关的高级内容，包含在 Android 上使用 eBPF 程序、使用 eBPF 程序进行可能的攻击与防御、复杂的追踪等等。将 eBPF 用户态与内核态的部分结合起来，可能能带来巨大的威力（同时也是安全隐患）。
+
+Android:
+
+- [在 Android 上使用 eBPF 程序](src/22-android/README.md)
+
+网络和追踪：
+
+- [使用 eBPF 追踪 HTTP 请求或其他七层协议](src/23-http/README.md)
+- [使用 sockops 加速网络请求转发](src/29-sockops/README.md)
+
+安全：
+
+- [使用 eBPF 隐藏进程或文件信息](src/24-hide/README.md)
+- [使用 bpf_send_signal 发送信号终止进程](src/25-signal/README.md)
+- [使用 eBPF 添加 sudo 用户](src/26-sudo/README.md)
+- [使用 eBPF 替换任意程序读取或写入的文本](src/27-replace/README.md)
+- [BPF的生命周期：使用 Detached 模式在用户态应用退出后持续运行 eBPF 程序](src/28-detach/README.md)
+
+持续更新中...
+
+## 为什么要写这个教程？
+
+在学习 eBPF 的过程中，我们受到了 [bcc python developer tutorial](src/bcc-documents/tutorial_bcc_python_developer.md) 的许多启发和帮助，但从当下的角度出发，使用 libbpf 开发 eBPF 的应用是目前相对更好的选择。但目前似乎很少有基于 libbpf 和 BPF CO-RE 出发的、通过案例和工具介绍 eBPF 开发的教程，因此我们发起了这个项目，采用类似 bcc python developer tutorial 的组织方式，但使用 CO-RE 的 libbpf 进行开发。
+
+本项目主要基于 [libbpf-boostrap](https://github.com/libbpf/libbpf-bootstrap) 和 [eunomia-bpf](https://github.com/eunomia-bpf/eunomia-bpf) 两个框架完成，并使用 eunomia-bpf 帮助简化一部分 libbpf eBPF 用户态代码的编写，让开发者专注于内核态的 eBPF 代码的开发。
+
+> - 我们还提供了一个使用 ChatGPT ，通过自然语言描述即可自动编写 eBPF 程序和追踪 Linux 系统的小工具，可以让您交互式地学习 eBPF 程序：[GPTtrace](https://github.com/eunomia-bpf/GPTtrace)
+> - 欢迎在本仓库的 issue 或 discussion 中提出任意关于 eBPF 学习的疑惑和问题，或者实践中遇到的 bug，我们会尽力帮助您解答！
 
 ## GitHub 模板：轻松构建 eBPF 项目和开发环境，一键在线编译运行 eBPF 程序
 
 面对创建一个 eBPF 项目，您是否对如何开始搭建环境以及选择编程语言感到困惑？别担心，我们为您准备了一系列 GitHub 模板，以便您快速启动一个全新的eBPF项目。只需在GitHub上点击 `Use this template` 按钮，即可开始使用。
 
-- <https://github.com/eunomia-bpf/libbpf-starter-template>：基于C语言和 libbpf 框架的eBPF项目模板
-- <https://github.com/eunomia-bpf/cilium-ebpf-starter-template>：基于C语言和cilium/ebpf框架的eBPF项目模板
-- <https://github.com/eunomia-bpf/libbpf-rs-starter-template>：基于Rust语言和libbpf-rs框架的eBPF项目模板
-- <https://github.com/eunomia-bpf/eunomia-template>：基于C语言和eunomia-bpf框架的eBPF项目模板
+- <https://github.com/eunomia-bpf/libbpf-starter-template>：基于 C 语言和 libbpf 框架的eBPF 项目模板
+- <https://github.com/eunomia-bpf/cilium-ebpf-starter-template>：基于 Go 语言和cilium/框架的的 eBPF 项目模板
+- <https://github.com/eunomia-bpf/libbpf-rs-starter-template>：基于 Rust 语言和libbpf-rs 框架的 eBPF 项目模板
+- <https://github.com/eunomia-bpf/eunomia-template>：基于 C 语言和 eunomia-bpf 框架的eBPF 项目模板
 
 这些启动模板包含以下功能：
 
@@ -126,19 +161,19 @@ eunomia-bpf 由一个编译工具链和一个运行时库组成, 对比传统的
 > - eunomia-bpf 项目 Github 地址: <https://github.com/eunomia-bpf/eunomia-bpf>
 > - gitee 镜像: <https://gitee.com/anolis/eunomia>
 
-## 让 chatGPT 来帮助我们
+## 让 ChatGPT 来帮助我们
 
-本教程借助 chatGPT 来学习编写 eBPF 程序，同时我们尝试教会 chatGPT 编写 eBPF 程序，大概步骤如下：
+本教程借助 ChatGPT 来学习编写 eBPF 程序，同时我们尝试教会 ChatGPT 编写 eBPF 程序，大概步骤如下：
 
 1. 告诉它基本的 eBPF 编程相关的常识
 2. 告诉它一些案例：hello world，eBPF 程序的基本结构，如何使用 eBPF 程序进行追踪，并且让它开始编写教程
 3. 手动调整教程，并纠正代码和文档中的错误
-4. 把修改后的代码再喂给 chatGPT，让它继续学习
-5. 尝试让 chatGPT 自动生成 eBPF 程序和对应的教程文档！例如
+4. 把修改后的代码再喂给 ChatGPT，让它继续学习
+5. 尝试让 ChatGPT 自动生成 eBPF 程序和对应的教程文档！例如
 
 ![ebpf-chatgpt-signal](imgs/ebpf-chatgpt-signal.png)
 
-完整的对话记录可以在这里找到: [chatGPT.md](chatGPT.md)
+完整的对话记录可以在这里找到: [ChatGPT.md](ChatGPT.md)
 
 我们也构建了一个命令行工具的 demo ，通过本教程的训练， 让它通过自然语言描述即可自动编写 eBPF 程序，追踪 Linux 系统：https://github.com/eunomia-bpf/GPTtrace
 
