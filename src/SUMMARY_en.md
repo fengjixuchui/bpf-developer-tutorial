@@ -1,6 +1,12 @@
-# Summary
+# eBPF Tutorial by Example: Learning CO-RE eBPF Step by Step with Tools
 
-# eBPF Practice Tutorial: Based on libbpf and CO-RE
+[![CI](https://github.com/eunomia-bpf/bpf-developer-tutorial/actions/workflows/main.yml/badge.svg)](https://github.com/eunomia-bpf/bpf-developer-tutorial/actions/workflows/main.yml)
+
+This is a development tutorial for eBPF based on CO-RE (Compile Once, Run Everywhere). It provides practical eBPF development practices from beginner to advanced, including basic concepts, code examples, and real-world applications. Unlike BCC, we use frameworks like libbpf, Cilium, libbpf-rs, and eunomia-bpf for development, with examples in languages such as C, Go, and Rust.
+
+This tutorial does not cover complex concepts and scenario introductions. Its main purpose is to provide examples of eBPF tools (**very short, starting with twenty lines of code!**) to help eBPF application developers quickly grasp eBPF development methods and techniques. The tutorial content can be found in the directory, with each directory being an independent eBPF tool example.
+
+# Table of Contents
 
 - [Introduction to basic concepts of eBPF and common development tools](0-introduce/README.md)
 - [eBPF Hello World, basic framework and development process](1-helloworld/README.md)
@@ -27,6 +33,7 @@
 
 - [Using eBPF programs on Android](22-android/README.md)
 - [Tracing HTTP requests or other layer 7 protocols using eBPF](23-http/README.md)
+- [Capturing Plain Text Data of Various Libraries' SSL/TLS Using uprobe](30-sslsniff/README.md)
 - [Accelerating network request forwarding using sockops](29-sockops/README.md)
 - [Hiding process or file information using eBPF](24-hide/README.md)
 - [Terminating processes by sending signals using bpf_send_signal](25-signal/README.md)
