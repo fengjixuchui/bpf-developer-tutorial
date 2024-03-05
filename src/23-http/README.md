@@ -374,6 +374,8 @@ if (bpf_strncmp(line_buffer, 3, "GET") != 0 &&
 }
 ```
 
+> 注意：bpf_strncmp 这个内核 helper 在 5.17 版本中才被引入，如果你的内核版本低于 5.17，可以手动匹配字符串来实现相同的功能。
+
 这段代码使用`bpf_strncmp`函数比较`line_buffer`中的数据与HTTP请求方法（GET、POST、PUT、DELETE、HTTP）是否匹配。如果不匹配，说明不是HTTP请求，直接返回0，放弃处理。
 
 ```c
@@ -450,7 +452,7 @@ return skb->len;
 
 ### 编译运行
 
-完整的源代码可以在 <https://github.com/eunomia-bpf/bpf-developer-tutorial/tree/main/src/23-http> 中找到。编译运行上述代码：
+完整的源代码可以在 <https://github.com/eunomia-bpf/bpf-developer-tutorial/tree/main/src/23-http> 中找到。关于如何安装依赖，请参考：<https://eunomia.dev/tutorials/11-bootstrap/> 编译运行上述代码：
 
 ```console
 $ git submodule update --init --recursive
@@ -646,3 +648,5 @@ char _license[] SEC("license") = "GPL";
    - 教程内容包括开发eBPF程序、使用eBPF工具链和实施HTTP请求的追踪。
 
 通过这篇文章，读者可以获得深入了解如何使用eBPF技术来追踪七层协议，尤其是HTTP流量的知识。这将有助于更好地监控和分析网络流量，从而提高应用程序性能和安全性。如果您希望学习更多关于 eBPF 的知识和实践，可以访问我们的教程代码仓库 <https://github.com/eunomia-bpf/bpf-developer-tutorial> 或网站 <https://eunomia.dev/zh/tutorials/> 以获取更多示例和完整的教程。
+
+> 原文地址：<https://eunomia.dev/zh/tutorials/23-http/> 转载请注明出处。

@@ -25,6 +25,8 @@ Currently, eBPF is still in the early stages. However, with the help of the kern
 
 Moreover, eBPF has the ability to write data to any address of a user space process (bpf_probe_write_user[7]), partially modify the return value of a kernel function (bpf_override_return[8]), and even directly execute certain system calls in kernel mode[9]. Fortunately, eBPF performs strict security checks on the bytecode before loading it into the kernel to ensure that there are no operations such as memory out-of-bounds. Moreover, many features that may expand the attack surface and pose security risks need to be explicitly enabled during kernel compilation. Before loading the bytecode into the kernel, the Wasm virtual machine can also choose to enable or disable certain eBPF features to ensure the security of the sandbox.
 
+In addition to the kernel mode eBPF runtime, eBPF can also be extended to user space, for example, [bpftime](https://github.com/eunomia-bpf/bpftime) to achieve higher performance user space tracing, performance analysis, plugins, etc.
+
 ## 2. Some Tips on Learning eBPF Development
 
 This article will not provide a more detailed introduction to the principles of eBPF, but here is a learning plan and reference materials that may be of value:
@@ -52,6 +54,7 @@ Answer three questions:
 
 Understand and try eBPF development frameworks:
 
+- bpftrace tutorial：<https://eunomia.dev/tutorials/bpftrace-tutorial/> （Try it，1h）
 - Examples of developing various tools with BCC: <https://github.com/iovisor/bcc/blob/master/docs/tutorial_bcc_python_developer.md> (Run through, 3-4h)
 - Some examples of libbpf: <https://github.com/libbpf/libbpf-bootstrap> (Run any interesting one and read the source code, 2h)
 - Tutorial based on libbpf and eunomia-bpf: <https://github.com/eunomia-bpf/bpf-developer-tutorial> (Read part 1-10, 3-4h)

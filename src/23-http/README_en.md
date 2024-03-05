@@ -363,6 +363,8 @@ if (bpf_strncmp(line_buffer, 3, "GET") != 0 &&
 }
 ```
 
+> Note: The `bpf_strncmp` function is a helper function available from kernel version 5.17. For earlier versions, you can manually write a function to compare strings.
+
 This piece of code uses the `bpf_strncmp` function to compare the data in `line_buffer` with HTTP request methods (GET, POST, PUT, DELETE, HTTP). If there is no match, indicating that it is not an HTTP request, it returns 0, indicating that it should not be processed.
 
 ```c
@@ -633,3 +635,5 @@ In today's complex technological landscape, system observability has become cruc
    - The tutorial covers the development of eBPF programs, the use of the eBPF toolchain, and the implementation of HTTP request tracing.
 
 Through this article, readers can gain a deep understanding of how to use eBPF technology for tracing seven-layer protocols, particularly HTTP traffic. This knowledge will help enhance the monitoring and analysis of network traffic, thereby improving application performance and security. If you're interested in learning more about eBPF and its practical applications, you can visit our tutorial code repository at <https://github.com/eunomia-bpf/bpf-developer-tutorial> or our website at <https://eunomia.dev/tutorials/> for more examples and complete tutorials.
+
+> The original link of this article: <https://eunomia.dev/tutorials/23-http>

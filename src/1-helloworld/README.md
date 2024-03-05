@@ -16,7 +16,8 @@
 
 要开发eBPF程序，您需要安装以下软件和工具：
 
-- Linux 内核：由于eBPF是内核技术，因此您需要具备较新版本的Linux内核（推荐4.8及以上版本），以支持eBPF功能。
+- Linux 内核：由于eBPF是内核技术，因此您需要具备较新版本的Linux内核（至少 4.8 及以上版本，建议至少在 5.15 以上），以支持eBPF功能。
+    - 建议使用最新的 Ubuntu 版本（例如 Ubuntu 23.10）以获得最佳的学习体验，较旧的内核 eBPF 功能支持可能相对不全。
 - LLVM 和 Clang：这些工具用于编译eBPF程序。安装最新版本的LLVM和Clang可以确保您获得最佳的eBPF支持。
 
 eBPF 程序主要由两部分构成：内核态部分和用户态部分。内核态部分包含 eBPF 程序的实际逻辑，用户态部分负责加载、运行和监控内核态程序。
@@ -55,8 +56,9 @@ $ wget https://github.com/eunomia-bpf/eunomia-bpf/releases/latest/download/ecc &
 $ ./ecc -h
 eunomia-bpf compiler
 Usage: ecc [OPTIONS] <SOURCE_PATH> [EXPORT_EVENT_HEADER]
-....
 ```
+
+注：假如在 aarch64 平台上，请从 release 下载 [ecc-aarch64](https://github.com/eunomia-bpf/eunomia-bpf/releases/latest/download/ecc-aarch64) 和 [ecli-aarch64](https://github.com/eunomia-bpf/eunomia-bpf/releases/latest/download/ecli-aarch64).
 
 也可以使用 docker 镜像进行编译：
 
@@ -191,3 +193,5 @@ eBPF 程序的开发和使用流程可以概括为如下几个步骤：
 需要注意的是，BPF 程序的执行是在内核空间进行的，因此需要使用特殊的工具和技术来编写、编译和调试 BPF 程序。eunomia-bpf 是一个开源的 BPF 编译器和工具包，它可以帮助开发者快速和简单地编写和运行 BPF 程序。
 
 您还可以访问我们的教程代码仓库 <https://github.com/eunomia-bpf/bpf-developer-tutorial> 以获取更多示例和完整的教程，全部内容均已开源。我们会继续分享更多有关 eBPF 开发实践的内容，帮助您更好地理解和掌握 eBPF 技术。
+
+> 原文地址：<https://eunomia.dev/zh/tutorials/1-helloworld/> 转载请注明出处。

@@ -4,7 +4,7 @@ With the widespread use of TLS in modern network environments, tracing microserv
 
 However, a new solution is now available. Through the use of eBPF technology and its capability to perform probing in user space, a method has emerged to regain plain text data, allowing us to intuitively view the pre-encrypted communication content. Nevertheless, each application might utilize different libraries, and each library comes in multiple versions, introducing complexity to the tracking process.
 
-In this tutorial, we will guide you through an eBPF tracing technique that spans across various user-space SSL/TLS libraries. This technique not only allows simultaneous tracing of user-space libraries like GnuTLS and OpenSSL but also significantly reduces maintenance efforts for new library versions compared to previous methods.
+In this tutorial, we will guide you through an eBPF tracing technique that spans across various user-space SSL/TLS libraries. This technique not only allows simultaneous tracing of user-space libraries like GnuTLS and OpenSSL but also significantly reduces maintenance efforts for new library versions compared to previous methods. The complete code for this tutorial can be found in <完整的源代码可以在这里查看：<https://github.com/eunomia-bpf/bpf-developer-tutorial/tree/main/src/30-sslsniff>
 
 ## Background Knowledge
 
@@ -42,7 +42,7 @@ TLS and SSL don't perfectly align with any single layer of the OSI model or the 
 
 eBPF (Extended Berkeley Packet Filter): It's a kernel technology that allows users to run predefined programs in the kernel space without modifying kernel source code or reloading modules. It creates a bridge that enables interaction between user space and kernel space, providing unprecedented capabilities for tasks like system monitoring, performance analysis, and network traffic analysis.
 
-uprobes are a significant feature of eBPF, allowing dynamic insertion of probe points in user space applications, particularly useful for tracking function calls in SSL/TLS libraries.
+uprobes are a significant feature of eBPF, allowing dynamic insertion of probe points in user space applications, particularly useful for tracking function calls in SSL/TLS libraries. Uprobe in kernel mode eBPF runtime may also cause relatively large performance overhead. In this case, you can also consider using user mode eBPF runtime, such as [bpftime](https://github.com/eunomia-bpf/bpftime)。bpftime is a user mode eBPF runtime based on LLVM JIT/AOT. It can run eBPF programs in user mode and is compatible with kernel mode eBPF, avoiding context switching between kernel mode and user mode, thereby improving the execution efficiency of eBPF programs. bpftime can have a performance overhead that is one order of magnitude smaller than that of kernel mode eBPF.
 
 ### User-Space Libraries
 
@@ -540,3 +540,5 @@ References:
 - <https://www.openssl.org/docs/man1.1.1/man3/SSL_read.html>
 - <https://github.com/iovisor/bcc/blob/master/tools/sslsniff_example.txt>
 - <https://en.wikipedia.org/wiki/Transport_Layer_Security>
+
+> The original link of this article: <https://eunomia.dev/tutorials/30-sslsniff>
